@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<div th:include="~{includes/bootstrap :: bootstrapMeta}" th:remove="tag" />
+	<title>Employee Manager</title>
+	<div th:include="~{includes/bootstrap :: bootstrapCSS}" th:remove="tag" />
+</head>
+
+<body>
+	<div class="container" role="main">
+
+		<div class="page-header">
+			<h1>Employee Management</h1>
+		</div>
+
+		<!-- include the Nav bar fragment-->
+		<nav th:replace="~{includes/searchNav :: search}"></nav>
+
+		<!--  Error message ----------------------------------------------------------- -->
+		<div th:unless="${errorMessage} == null" th:utext="${errorMessage}" class="alert alert-danger" role="alert"></div>
+		<!--  Error message ----------------------------------------------------------- -->
+
+		<!--  Warning message ----------------------------------------------------------- -->
+		<div th:unless="${warningMessage} == null" th:utext="${warningMessage}" class="alert alert-warning" role="warning"></div>
+		<!--  Warning message ----------------------------------------------------------- -->
+
+		<!--   message ----------------------------------------------------------- -->
+		<div th:unless="${message} == null" th:utext="${message}" class="alert alert-success" role="warning"></div>
+		<!--   message ----------------------------------------------------------- -->
+
+
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+
+				<table data-toggle="table" class="table table-striped">
+					<thead>
+						<tr>
+							<th data-sortable="true">SSN</th>
+							<th data-sortable="true">First Name</th>
+							<th data-sortable="true">Last Name</th>
+							<th data-sortable="true">Day of birth</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!--  list all items ----------------------------------------------------------- -->
+						<tr th:each="employee : ${#request.getAttribute('employees')}">
+							<td th:text="${employee.ssn}"></td>
+							<td th:text="${employee.firstName}"></td>
+							<td th:text="${employee.lastName}"></td>
+							<td th:text="${#dates.format(employee.dayOfBirth,'dd.MM.yyyy')}"></td>
+
+							<td>
+								<a th:href="@{/editEmployee(ssn=${employee.ssn})}" class="btn btn-xs btn-success">
+									<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+									Edit
+								</a>
+
+								<a th:href="@{/deleteEmployee(ssn=${employee.ssn})}" class="btn btn-xs btn-danger">
+									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+									Delete
+								</a>
+
+							</td>
+						</tr>
+						<!--  list all items ----------------------------------------------------------- -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!--  End of container -->
+	<div th:include="~{includes/bootstrap :: bootstrapJS}" th:remove="tag" />
+</body>
+
+</html>
